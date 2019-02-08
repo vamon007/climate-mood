@@ -32,7 +32,7 @@ auth.set_access_token(accessToken, accessTokenSecret)
 api = tweepy.API(auth, wait_on_rate_limit=True)
 
 # Storing the tweets
-tweets = tweepy.Cursor(api.search, q='climate change').items(10000)
+tweets = tweepy.Cursor(api.search, q='climate change').items(1000)
 
 # Creating a list of String Tweets
 for tweet in tweets:
