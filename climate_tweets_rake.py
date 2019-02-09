@@ -48,7 +48,7 @@ def tweets_to_sheet():
         client.open('Climate Mood').values_clear("Sheet1")
 	
         #Get the tweets
-        tweets = tweepy.Cursor(api.search, q='climate change').items(1000)
+        tweets = tweepy.Cursor(api.search, q='climate change').items(2000)
 	
         # Creating a list of String Tweets
         for tweet in tweets:
