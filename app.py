@@ -69,19 +69,6 @@ app.layout = html.Div(children=[
                 'title': 'Polarity Trend of the Tweets'
             }
         }
-    ),
-
-    dcc.Graph(
-        id='line',
-        figure={
-            'data': [
-                {'y': subjectivityVal,
-                 'type': 'basic-line',},
-            ],
-            'layout': {
-                'title': 'Subjectivity Trend of the Tweets'
-            }
-        }
     )
 ])
 
