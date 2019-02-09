@@ -5,51 +5,18 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 import plotly.graph_objs as go
-import tweepy
-import re
-from tweepy import Stream, OAuthHandler
-from tweepy.streaming import StreamListener
-from textblob import TextBlob
+import gspread
+from google.oauth2 import service_account
+from oauth2client.service_account import ServiceAccountCredentials
 
 app = dash.Dash(__name__)
-
-# Declaring relevant Variables
-polarityVal = []
-positive = 0
-negative = 0
-neutral = 0 
-subjectivityVal = []
-tweetsArray = []
+app.title = 'Climate Mood Dashboard'
 
 #Environment Variables to Twitter App
 consumerKey = os.environ["CONSUMER_KEY"]
 consumerSecret = os.environ["CONSUMER_SECRET"]
 accessToken = os.environ["ACCESS_TOKEN"]
 accessTokenSecret = os.environ["ACCESS_TOKEN_SECRET"]
-
-# Authenticating the Twitter Application and creating an object to use the Twitter API
-auth = tweepy.OAuthHandler(consumerKey, consumerSecret)
-auth.set_access_token(accessToken, accessTokenSecret)
-api = tweepy.API(auth, wait_on_rate_limit=True)
-
-# Storing the tweets
-tweets = tweepy.Cursor(api.search, q='climate change').items(1000)
-
-# Creating a list of String Tweets
-for tweet in tweets:
-    tweetsArray.append(tweet.text)
-
-# Cleaning a Tweet String
-def cleanTweet(tweet):
-    # Remove Links, Special Characters etc from tweet
-    return ' '.join(re.sub("([^0-9A-Za-z \t])|(\w+:\/\/\S+)"," ",tweet).split())
-
-# Performing Sentiment Analysis
-for tweet in tweetsArray:
-    t = cleanTweet(tweet)
-    analysis = TextBlob(t)
-    polarityVal.append(analysis.sentiment.polarity)
-    subjectivityVal.append(analysis.sentiment.subjectivity)
 
 app.layout = html.Div(children=[
     html.H1(children='Climate Moods'),

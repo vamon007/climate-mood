@@ -2,3 +2,4 @@ venv
 *.pyc
 .DS_Store
 .env
+credentials_climate_mood.json
