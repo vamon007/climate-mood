@@ -1,3 +1,4 @@
+import os
 import dash
 from dash.dependencies import Input, State, Output
 import dash_core_components as dcc
@@ -21,10 +22,10 @@ subjectivityVal = []
 tweetsArray = []
 
 #Environment Variables to Twitter App
-consumerKey = CONSUMER_KEY
-consumerSecret = CONSUMER_SECRET
-accessToken = ACCESS_TOKEN
-accessTokenSecret = ACCESS_TOKEN_SECRET
+consumerKey = os.environ["CONSUMER_KEY"]
+consumerSecret = os.environ["CONSUMER_SECRET"]
+accessToken = os.environ["ACCESS_TOKEN"]
+accessTokenSecret = os.environ["ACCESS_TOKEN_SECRET"]
 
 # Authenticating the Twitter Application and creating an object to use the Twitter API
 auth = tweepy.OAuthHandler(consumerKey, consumerSecret)
