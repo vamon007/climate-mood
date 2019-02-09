@@ -11,6 +11,7 @@ from google.oauth2 import service_account
 from oauth2client.service_account import ServiceAccountCredentials
 
 app = dash.Dash(__name__)
+server = app.server
 app.title = 'Climate Mood Dashboard'
 
 SCOPES = ['https://www.googleapis.com/auth/sqlservice.admin']
