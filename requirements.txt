@@ -8,12 +8,6 @@ dash-renderer==0.13.0
 decorator==4.3.0
 Flask==1.0.2
 Flask-Compress==1.4.0
-google-api-python-client==1.6.5
-google-auth==1.3.0
-google-auth-httplib2==0.0.3
-google-auth-oauthlib==0.2.0
-gspread==3.1.0
-gspread-dataframe==3.0.2
 gunicorn==19.9.0
 idna==2.7
 ipython-genutils==0.2.0
@@ -29,12 +23,14 @@ numpy==1.15.4
 numpydoc==0.8.0
 pandas==0.23.4
 plotly==3.3.0
+psycopg2==2.7.7
 pytz==2018.4
 requests==2.19.1
 scikit-image==0.14.1
 scikit-learn==0.20.1
 scipy==1.1.0
 six==1.11.0
+sqlalchemy==1.2.17
 textblob==0.15.2
 traitlets==4.3.2
 tweepy==3.7.0
