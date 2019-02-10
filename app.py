@@ -28,7 +28,7 @@ app.layout = html.Div(children=[
     html.H1(children='Climate Moods'),
 
     html.Div(children='''
-             Twitter sentiment analysis on moods on climate change.
+             Twitter sentiment analysis on climate change.
     '''),
 
     dcc.Graph(
