@@ -34,7 +34,7 @@ def tweets_to_db():
         api = tweepy.API(auth, wait_on_rate_limit=True)
 
         #Get the tweets
-        tweets = tweepy.Cursor(api.search, q='climate change').items(1000)
+        tweets = tweepy.Cursor(api.search, q='climate change -filter:retweets -filter:replies', lang='en').items(10000)
 	
         # Creating a list of String Tweets
         for tweet in tweets:

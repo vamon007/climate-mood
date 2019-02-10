@@ -7,6 +7,7 @@ import pandas as pd
 import plotly.graph_objs as go
 import psycopg2
 from sqlalchemy import create_engine
+from datetime import datetime
 
 app = dash.Dash(__name__)
 server = app.server
@@ -34,7 +35,7 @@ app.layout = html.Div(children=[
         id='line',
         figure={
             'data': [
-                {'y': tdf["Polarity"], 
+                {'x': tdf.Date, 'y': tdf["Polarity"], 
                  'type': 'basic-line',},    
             ],
             'layout': {
