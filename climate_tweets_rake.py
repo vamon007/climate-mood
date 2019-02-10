@@ -34,7 +34,7 @@ def tweets_to_db():
         api = tweepy.API(auth, wait_on_rate_limit=True)
 
         #Get the tweets
-        tweets = tweepy.Cursor(api.search, q='climate change -filter:retweets -filter:replies', lang='en').items(10000)
+        tweets = tweepy.Cursor(api.search, q='place:96683cc9126741d1 climate change -filter:retweets -filter:replies', lang='en').items(5000)
 	
         # Creating a list of String Tweets
         for tweet in tweets:
@@ -55,7 +55,7 @@ def tweets_to_db():
             subjectivityVal.append(analysis.sentiment.subjectivity)
 
         # Create pandas dataframe from arrays
-        tweet_frame = pd.DataFrame({"Tweets":tweetsArray, "TimeStamp":timestampArray, "UTF Offset":utfArray, "Polarity":polarityVal, "Subjectivity":subjectivityVal}, columns=["Tweets", "TimeStamp", "UTF Offset", "Polarity", "Subjectivity"])
+        tweet_frame = pd.DataFrame({"Tweets":tweetsArray, "TimeStamp":timestampArray, "UTF_Offset":utfArray, "Polarity":polarityVal, "Subjectivity":subjectivityVal}, columns=["Tweets", "TimeStamp", "UTF_Offset", "Polarity", "Subjectivity"])
 
         # Connect to Heroku and write to db
         engine = create_engine(tweet_db_url)

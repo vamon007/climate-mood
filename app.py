@@ -35,7 +35,7 @@ app.layout = html.Div(children=[
         id='line',
         figure={
             'data': [
-                {'x': tdf.Date, 'y': tdf["Polarity"], 
+                {'x': tdf.TimeStamp, 'y': tdf["Polarity"], 
                  'type': 'basic-line',},    
             ],
             'layout': {
