@@ -47,8 +47,9 @@ app.layout = html.Div(children=[
                      'type': 'basic-line',
                      'customdata': tdf["Polarity"]
                 }],
-                'layout': {
-                }
+                'layout': go.Layout(
+                    margin={'l': 40, 'b': 40, 't': 40, 'r': 40}
+                )
             }
         )
     ], className='sentiment')
