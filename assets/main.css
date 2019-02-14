@@ -19,12 +19,14 @@ body {
 }
 
 .sentiment {
-    width: 75%;
+    width: 70%;
     margin: 0 auto;
+    justify-content: center;
 }
 
 .sentiment .senti-title {
     display: flex;
+    justify-content: space-between;
     width: 100%;
     margin-top: 20px;
 }
@@ -35,13 +37,11 @@ body {
 }
 
 .sentiment .senti-title #tweet-content {
-    position: relative;
     border: 2px solid #0091FF;
     background-color: #FFFFFF;
     border-radius: 5px;
     width: 400px;
     height: 44px;
-    float: right;
     font-size: 8px;
     color: #000000;
     padding: 5px;
@@ -51,6 +51,41 @@ body {
 .sentiment .sentiment-chart {
     border-radius: 5px;
     background: #ffffff;
-    width: 90%;
+    width: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.mood-stats {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+.mood-stats h3 {
+    text-align:center;
+    font-size: 24px;
+}
+
+.mood-stats .analysis {
+    margin: 5px 25px;
+    display: inline;
+}
+
+.mood-stats li .verbosity {
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.mood-stats li .popular {
+    background-color: #FFFFFF:
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.mood-stats li .mood-ratio {
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.modebar{
+      display: none !important;
+}
