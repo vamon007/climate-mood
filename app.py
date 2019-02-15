@@ -68,10 +68,14 @@ tdf_line = tdf_slope*tdf.index+tdf_intercept
 app.layout = html.Div(children=[
     html.Div(children=[
         html.H1(children='Climate Mood'),
-
         html.Div(children=['''
              Twitter sentiment analysis on climate change
-        '''], className='description'),
+        ''', 
+
+            html.A(html.Button('Source Code!'),
+                href='https://github.com/aakashhdesai/climate-mood',
+            )
+        ], className='description'),
     ], className='navigation'),
 
     html.Div(children=[

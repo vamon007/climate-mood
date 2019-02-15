@@ -18,6 +18,26 @@ body {
     font-size: 18px;
 }
 
+.navigation a button {
+  background-color: #0091FF; /* Green */
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+}
+
+.navigation a button:hover {
+  background-color: #4CAF50;
+}
+
+.navigation a button:active {
+  background-color: #3e8e41;
+  transform: translateY(1px);
+}
+
 .sentiment {
     width: 70%;
     margin: 0 auto;
