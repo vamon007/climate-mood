@@ -5,6 +5,8 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 import plotly.graph_objs as go
+from numpy import arange,array,ones
+from scipy import stats
 import psycopg2
 from sqlalchemy import create_engine
 from datetime import datetime
@@ -24,6 +26,8 @@ def get_df_from_db():
     return df
 
 tdf = get_df_from_db()
+tdf["TimeStamp"]=pd.to_datetime(tdf["TimeStamp"])
+tdf.set_index(tdf["TimeStamp"])
 
 def mood_verbosity():
 
@@ -59,9 +63,11 @@ def average_moods():
 mdf = mood_verbosity()
 pdf = popular_moods()
 adf = average_moods()
+tdf_slope, tdf_intercept, tdf_r_value, tdf_p_value, tdf_std_err = stats.linregress(tdf.index, tdf["Polarity"])
+tdf_line = tdf_slope*tdf.index+tdf_intercept
 app.layout = html.Div(children=[
     html.Div(children=[
-        html.H1(children='Climate Moods'),
+        html.H1(children='Climate Mood'),
 
         html.Div(children=['''
              Twitter sentiment analysis on climate change
@@ -81,11 +87,28 @@ app.layout = html.Div(children=[
                     x=tdf.TimeStamp,
                     y=tdf['Polarity'], 
                     mode='markers',
-                    customdata=tdf['Polarity']
-                )],
+                    customdata=tdf['Polarity'],
+                    name='Tweets'
+                ),
+                go.Scatter(
+                    x = tdf["TimeStamp"], y = tdf_line, mode='lines', name='Trend Line'
+                )
+                ],
                 'layout': go.Layout(
                     margin={'l': 40, 'b': 40, 't': 40, 'r': 40},
-                    hovermode='closest'
+                    hovermode='closest',
+                    legend=dict(
+                        x=0,
+                        y=1,
+                        traceorder='normal',
+                        font=dict(
+                            size=12,
+                            color='#000'
+                        ),
+                        bgcolor='#E2E2E2',
+                        bordercolor='#FFFFFF',
+                        borderwidth=2
+                        )
                 )
             }
         )
