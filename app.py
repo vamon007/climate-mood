@@ -172,7 +172,7 @@ app.layout = html.Div(children=[
     dash.dependencies.Output('tweet-content', 'children'),
     [dash.dependencies.Input('sentiment-chart', 'hoverData')])
 def update_text(hoverData):
-    s = '' if bool(hoverData) == False else tdf[tdf['Polarity'] == hoverData['points'][0]['customdata']].iloc[0]['Tweets']
+    s = 'Hover over points to show the tweet here!' if bool(hoverData) == False else tdf[tdf['Polarity'] == hoverData['points'][0]['customdata']].iloc[0]['Tweets']
     return html.P(
         '{}'.format(s)
 )
