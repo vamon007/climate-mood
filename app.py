@@ -49,20 +49,20 @@ def popular_moods():
 
     return pop_mood
 
-def average_moods():
+def average_subjectivity():
 
-    a_mood = pd.DataFrame({'Positive': tdf[tdf['Polarity'] > 0]['Polarity'].mean(),
-                           'Negative': tdf[tdf['Polarity'] < 0]['Polarity'].mean()
+    mood_subj = pd.DataFrame({'Positive': tdf[tdf['Polarity'] > 0]['Subjectivity'].mean(),
+                           'Negative': tdf[tdf['Polarity'] < 0]['Subjectivity'].mean()
                          }, index=[0])
 
-    a_mood = a_mood.abs()
+    mood_subj = mood_subj.abs()
 
-    return a_mood
+    return mood_subj
 
 
 mdf = mood_verbosity()
 pdf = popular_moods()
-adf = average_moods()
+adf = average_subjectivity()
 tdf_slope, tdf_intercept, tdf_r_value, tdf_p_value, tdf_std_err = stats.linregress(tdf.index, tdf["Polarity"])
 tdf_line = tdf_slope*tdf.index+tdf_intercept
 app.layout = html.Div(children=[
@@ -87,16 +87,13 @@ app.layout = html.Div(children=[
         dcc.Graph(
             id='sentiment-chart',
             figure={
-                'data': [go.Scatter(
-                    x=tdf.TimeStamp,
-                    y=tdf['Polarity'], 
-                    mode='markers',
-                    customdata=tdf['Polarity'],
-                    name='Tweets'
-                ),
-                go.Scatter(
-                    x = tdf["TimeStamp"], y = tdf_line, mode='lines', name='Trend Line'
-                )
+                'data': [
+                    go.Scatter(
+                        x=tdf.TimeStamp, y=tdf['Polarity'], mode='markers', customdata=tdf['Polarity'], name='Tweets'
+                    ),
+                    go.Scatter(
+                        x=tdf["TimeStamp"], y=tdf_line, mode='lines', name='Trend Line'
+                    )
                 ],
                 'layout': go.Layout(
                     margin={'l': 40, 'b': 40, 't': 40, 'r': 40},
@@ -169,7 +166,7 @@ app.layout = html.Div(children=[
         ], className = 'analysis'),
 
         html.Div(children=[
-            html.H3(children=['''Mood Amplitude''']),
+            html.H3(children=['''Mood Rating''']),
             html.Div(children=[
                 dcc.Graph(
                     figure={
@@ -180,7 +177,7 @@ app.layout = html.Div(children=[
                                         marker={'color': ['#49ad4b', '#ad4b49']})
                         ],
                         'layout': go.Layout(
-                                  title='Avg Mood per Tweet',
+                                  title='Avg Subjectivity per Mood',
                                   hovermode=False,
                                   xaxis=dict(showgrid=False, zeroline=False, ticks='', showticklabels=False),
                                   yaxis=dict(showgrid=False, zeroline=False, ticks='', showticklabels=False),
