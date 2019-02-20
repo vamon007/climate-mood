@@ -10,6 +10,7 @@ from scipy import stats
 import psycopg2
 from sqlalchemy import create_engine
 from datetime import datetime
+from pandas.tseries.offsets import *
 
 app = dash.Dash(__name__)
 server = app.server
@@ -23,11 +24,13 @@ def get_df_from_db():
 
     df = pd.read_sql_table('tweets', engine)
 
-    return df
+    df['TimeStamp'] = pd.to_datetime(df['TimeStamp'], unit='s')
+    df = df.set_index(df['TimeStamp'])
+    df = df[~df.index.duplicated(keep='first')].sort_index()
 
-tdf = get_df_from_db()
-tdf["TimeStamp"]=pd.to_datetime(tdf["TimeStamp"])
-tdf.set_index(tdf["TimeStamp"])
+    df = df.loc[df.iloc[df.index.get_loc((df.index[-1] - pd.DateOffset(hours=1)), method='nearest')]['TimeStamp']:df.index[-1]]
+
+    return df
 
 def mood_verbosity():
 
@@ -59,12 +62,10 @@ def average_subjectivity():
 
     return mood_subj
 
-
+tdf = get_df_from_db()
 mdf = mood_verbosity()
 pdf = popular_moods()
 adf = average_subjectivity()
-tdf_slope, tdf_intercept, tdf_r_value, tdf_p_value, tdf_std_err = stats.linregress(tdf.index, tdf["Polarity"])
-tdf_line = tdf_slope*tdf.index+tdf_intercept
 app.layout = html.Div(children=[
     html.Div(children=[
         html.H1(children='Climate Mood'),
@@ -88,12 +89,9 @@ app.layout = html.Div(children=[
             id='sentiment-chart',
             figure={
                 'data': [
-                    go.Scatter(
-                        x=tdf.TimeStamp, y=tdf['Polarity'], mode='markers', customdata=tdf['Polarity'], name='Tweets'
+                    go.Bar(
+                        x=tdf.index, y=tdf['Polarity'], customdata=tdf['Polarity']
                     ),
-                    go.Scatter(
-                        x=tdf["TimeStamp"], y=tdf_line, mode='lines', name='Trend Line'
-                    )
                 ],
                 'layout': go.Layout(
                     margin={'l': 40, 'b': 40, 't': 40, 'r': 40},
