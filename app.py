@@ -14,7 +14,7 @@ from pandas.tseries.offsets import *
 
 app = dash.Dash(__name__)
 server = app.server
-app.title = 'Climate Mood Dashboard'
+app.title = 'Climate Mood'
 
 tweet_db_url = os.environ['DATABASE_URL']
 
@@ -31,6 +31,21 @@ def get_df_from_db():
     df = df.loc[df.iloc[df.index.get_loc((df.index[-1] - pd.DateOffset(hours=1)), method='nearest')]['TimeStamp']:df.index[-1]]
 
     return df
+
+def sentiment_frames():
+
+    sf = get_df_from_db()
+
+    pf = sf[sf['Polarity'] > 0].groupby(pd.Grouper(freq='Min'))['Polarity'].count().fillna(0).to_frame()
+    nf = sf[sf['Polarity'] < 0].groupby(pd.Grouper(freq='Min'))['Polarity'].count().fillna(0).to_frame()
+    nef = sf[sf['Polarity'] == 0].groupby(pd.Grouper(freq='Min'))['Polarity'].count().fillna(0).to_frame()
+
+    s_m = pd.merge(pf, nf, left_index=True, right_index=True)
+    s_m = pd.merge(nef, s_m, left_index=True, right_index=True)
+
+    s_m = s_m.rename(columns={'Polarity':'Positive', 'Polarity_x':'Neutral', 'Polarity_y':'Negative'})
+
+    return s_m
 
 def mood_verbosity():
 
@@ -63,6 +78,7 @@ def average_subjectivity():
     return mood_subj
 
 tdf = get_df_from_db()
+sent = sentiment_frames()
 mdf = mood_verbosity()
 pdf = popular_moods()
 adf = average_subjectivity()
@@ -70,7 +86,7 @@ app.layout = html.Div(children=[
     html.Div(children=[
         html.H1(children='Climate Mood'),
         html.Div(children=['''
-             Twitter sentiment analysis on climate change
+            Hourly Twitter sentiment analysis on climate change
         ''', 
 
             html.A(html.Button('Source Code!'),
@@ -82,20 +98,26 @@ app.layout = html.Div(children=[
     html.Div(children=[
 
         html.Div(children=[
-            html.H3(children=['Tweet Sentiment vs. Time']),
-            html.Div(id='tweet-content')
+            html.H3(children=['Tweet Sentiment vs. Time (Per Min)']),
         ], className='senti-title'),
         dcc.Graph(
             id='sentiment-chart',
             figure={
                 'data': [
                     go.Bar(
-                        x=tdf.index, y=tdf['Polarity'], customdata=tdf['Polarity']
+                        x=sent.index, y=sent['Negative'], name='Negative', marker={'color': '#bf5241'}
+                    ),
+                    go.Bar(
+                        x=sent.index, y=sent['Neutral'], name='Neutral', marker={'color': '#417cbf'}
+                    ),
+                    go.Bar(
+                        x=sent.index, y=sent['Positive'], name='Positive', marker={'color': '#5fbf41'}
                     ),
                 ],
                 'layout': go.Layout(
                     margin={'l': 40, 'b': 40, 't': 40, 'r': 40},
                     hovermode='closest',
+                    barmode='stack',
                     legend=dict(
                         x=0,
                         y=1,
@@ -189,15 +211,6 @@ app.layout = html.Div(children=[
         ], className = 'analysis')
     ], className='mood-stats')
 ])
-
-@app.callback(
-    dash.dependencies.Output('tweet-content', 'children'),
-    [dash.dependencies.Input('sentiment-chart', 'hoverData')])
-def update_text(hoverData):
-    s = 'Hover over points to show the tweet here!' if bool(hoverData) == False else tdf[tdf['Polarity'] == hoverData['points'][0]['customdata']].iloc[0]['Tweets']
-    return html.P(
-        '{}'.format(s)
-)
 
 if __name__ == '__main__':
     app.run_server(debug=True)
