@@ -4,17 +4,22 @@ from dash.dependencies import Input, State, Output
 import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
+from pandas.tseries.offsets import *
 import plotly.graph_objs as go
 from numpy import arange,array,ones
 from scipy import stats
 import psycopg2
 from sqlalchemy import create_engine
 from datetime import datetime
-from pandas.tseries.offsets import *
+from flask import Flask, send_from_directory
 
 app = dash.Dash(__name__)
 server = app.server
 app.title = 'Climate Mood'
+
+@server.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(server.root_path, 'assets'), 'favicon.ico')
 
 tweet_db_url = os.environ['DATABASE_URL']
 
