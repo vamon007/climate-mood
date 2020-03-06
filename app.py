@@ -95,11 +95,7 @@ app.layout = html.Div(children=[
         ''', 
 
             html.A(html.Button('Source Code!'),
-                href='https://github.com/aakashhdesai/climate-mood',
-            ),
-
-            html.A(html.Button('Keep it running!'),
-                href='https://gofundme.com/climatemood',
+                href='https://github.com/warmdata/climate-mood',
             ),
         ], className='description'),
     ], className='navigation'),
