@@ -1,4 +1,5 @@
 # climate-mood
+an amazing app
 Climate Mood's purpose is to show hourly-updated sentiment analysis for the search term, "climate change", on [twitter](http://twitter.com/).
 
 ## Running the app
